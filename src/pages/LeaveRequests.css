@@ -1,0 +1,114 @@
+:root {
+  --bg-gradient: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0a0;
+  --accent-green: #2ecc71;
+  --accent-red: #e74c3c;
+  --table-bg: #1e2a38;
+  --table-border: rgba(255, 255, 255, 0.2);
+  --table-hover: rgba(52, 152, 219, 0.2);
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--bg-gradient);
+  color: var(--text-primary);
+}
+
+.leave-requests-page {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.header-buttons {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.back-button {
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.back-button:hover {
+  background-color: #2980b9;
+}
+
+.leave-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.leave-header h1 {
+  font-size: 2.5rem;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.leave-requests-table {
+  width: 95%;
+  border-collapse: collapse;
+  margin: 0 auto;
+}
+
+.leave-requests-table th,
+.leave-requests-table td {
+  padding: 15px 20px;
+  text-align: center;
+  background: var(--table-bg);
+  border: 1px solid var(--table-border);
+  color: var(--text-primary);
+}
+
+.leave-requests-table th {
+  font-size: 1rem;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.leave-requests-table tr:hover {
+  background: var(--table-hover);
+}
+
+.actions-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.approve-button,
+.deny-button {
+  background-color: var(--accent-green);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+.approve-button:hover {
+  background-color: #27ae60;
+}
+
+.deny-button {
+  background-color: var(--accent-red);
+}
+
+.deny-button:hover {
+  background-color: #c0392b;
+}

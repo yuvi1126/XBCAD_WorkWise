@@ -1,0 +1,264 @@
+/* Back Button */
+.back-button {
+  background-color: #2869ff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.back-button:hover {
+  background-color: #6291fd;
+}
+
+/* General Styling */
+.employee-page {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  color: #ffffff;
+}
+
+.employee-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.employee-header h1 {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.employee-header .actions {
+  display: flex;
+  gap: 12px;
+}
+
+.search-bar {
+  background-color: #1a2131;
+  border: 1px solid #1a2131;
+  color: #ffffff;
+  font-size: 14px;
+  padding: 8px 10px;
+  border-radius: 4px;
+  width: 240px;
+}
+
+.search-bar:focus {
+  outline: none;
+  border-color: #50b7f5;
+}
+
+.action-button {
+  background-color: #2869ff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.action-button:hover {
+  background-color: #6291fd;
+}
+
+/* Table View */
+.employee-table {
+  width: 90%; /* Increase table width */
+  max-width: 1200px; /* Optional: limit maximum width for better layout */
+  margin: 20px auto; /* Center the table */
+  border-collapse: collapse;
+  background-color: #1a2131; /* Dark background for the table */
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: 16px; /* Increase font size for better readability */
+  border: 1px solid #333c4d; /* Border around the table */
+}
+
+.employee-table th {
+  background-color: #242b3a; /* Darker background for table headers */
+  color: #ffffff;
+  padding: 16px; /* Increase padding for larger headers */
+  text-align: left;
+  border-bottom: 2px solid #333c4d;
+  font-weight: bold;
+  border: 1px solid #333c4d; /* Border around headers */
+}
+
+.employee-table td {
+  padding: 16px; /* Increase padding for larger rows */
+  border-bottom: 1px solid #333c4d;
+  color: #ffffff; /* White text for table rows */
+  border: 1px solid #333c4d; /* Border around cells */
+}
+
+.employee-table tbody tr:hover {
+  background-color: #2b354b; /* Highlight row on hover */
+}
+
+.employee-table tbody tr:last-child td {
+  border-bottom: none; /* Remove border for the last row */
+}
+
+/* Action Button in Table View */
+.employee-table tbody tr td .action-button {
+  background-color: #2869ff;
+  color: white;
+  border: none;
+  padding: 10px 20px; /* Larger buttons */
+  border-radius: 6px;
+  font-size: 14px; /* Slightly bigger font size for buttons */
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.employee-table tbody tr td .action-button:hover {
+  background-color: #6291fd;
+}
+
+/* Responsive Design for Smaller Screens */
+@media (max-width: 768px) {
+  .employee-table {
+    width: 100%; /* Use full width on smaller screens */
+    font-size: 14px; /* Reduce font size for smaller screens */
+    border: none; /* Remove outer border on small screens for better view */
+  }
+
+  .employee-table th, .employee-table td {
+    padding: 12px; /* Reduce padding for smaller screens */
+  }
+
+  .employee-table tbody tr td .action-button {
+    padding: 8px 16px; /* Adjust button size for smaller screens */
+    font-size: 12px; /* Adjust button text size for smaller screens */
+  }
+}
+
+/* Grid View */
+.gridView {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.employee-card {
+  background-color: #1a2131;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.employee-card:hover {
+  transform: scale(1.05);
+  transition: transform 0.2s;
+}
+
+.card-header {
+  font-weight: bold;
+  font-size: 16px;
+  color: #50b7f5;
+}
+
+.card-detail {
+  font-size: 14px;
+  color: #ffffff;
+}
+
+@media screen and (max-width: 768px) {
+  .employee-card {
+    width: 100%;
+  }
+}
+
+/* Modal Styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #1c2333;
+  color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.modal-content label {
+  display: block;
+  margin: 10px 0 5px;
+}
+
+.modal-content input,
+.modal-content select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #2b354b;
+  color: #ffffff;
+}
+
+.modal-content input:focus,
+.modal-content select:focus {
+  outline: none;
+  border-color: #50b7f5;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.action-button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  background: #50b7f5;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.action-button:hover {
+  background: #3a93c9;
+}
+
+.cancel-button {
+  background: #ff4d4d;
+}
+
+.cancel-button:hover {
+  background: #d43b3b;
+}

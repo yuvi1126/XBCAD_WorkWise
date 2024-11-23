@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { collection, addDoc, getDocs } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import "./Training.css";
 
@@ -11,6 +17,9 @@ const Training = () => {
     videoLink: "",
     attachedFile: null,
   });
+  const [enrolledEmployees, setEnrolledEmployees] = useState([]);
+  const [viewingCourse, setViewingCourse] = useState(null); // Currently viewed course for enrollment
+  const [showModal, setShowModal] = useState(false); // State to control modal visibility
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -58,9 +67,25 @@ const Training = () => {
     }
   };
 
-  const handleViewEnrolled = (courseId) => {
-    alert(`View Enrolled functionality for course ID: ${courseId}`);
-    // Implement logic for fetching and displaying employees enrolled in a specific course.
+  const handleViewEnrolled = async (courseId) => {
+    setViewingCourse(courseId);
+    try {
+      const q = query(
+        collection(db, "CourseEnrollments"),
+        where("courseId", "==", courseId)
+      );
+      const querySnapshot = await getDocs(q);
+      const enrolled = querySnapshot.docs.map((doc) => doc.data());
+      setEnrolledEmployees(enrolled);
+      setShowModal(true); // Open the modal
+    } catch (error) {
+      console.error("Error fetching enrolled employees: ", error);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false); // Close the modal
+    setViewingCourse(null);
   };
 
   return (
@@ -145,6 +170,40 @@ const Training = () => {
           )}
         </div>
       </section>
+
+      {/* Modal for Enrolled Employees */}
+      {showModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <h2>Employees Enrolled in {courses.find((c) => c.id === viewingCourse)?.title}</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Employee Name</th>
+                  <th>Course Title</th>
+                </tr>
+              </thead>
+              <tbody>
+                {enrolledEmployees.length > 0 ? (
+                  enrolledEmployees.map((employee, index) => (
+                    <tr key={index}>
+                      <td>{employee.FullName}</td>
+                      <td>{employee.title}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="2">No employees enrolled in this course.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+            <button className="close-modal-button" onClick={handleCloseModal}>
+              Back
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

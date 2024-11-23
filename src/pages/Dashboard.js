@@ -134,7 +134,7 @@ const DashboardPage = () => {
             <AddCircle />
             {isSidebarOpen && <span>Time and Attendance Tracking</span>}
           </li>
-          <li onClick={() => navigate("/payroll-compensation")}>
+          <li onClick={() => navigate("/payroll")}>
             <AdminPanelSettings />
             {isSidebarOpen && <span>Payroll and Compensation</span>}
           </li>

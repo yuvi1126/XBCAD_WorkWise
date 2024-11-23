@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { db } from "../firebaseConfig";
 import {
   collection,
-  addDoc,
+  addDoc, // Added missing import for addDoc
   getDocs,
   updateDoc,
   doc,
@@ -12,6 +12,7 @@ import "./Recruitment.css";
 const Recruitment = () => {
   const [jobs, setJobs] = useState([]);
   const [applicants, setApplicants] = useState([]);
+  const [employees, setEmployees] = useState([]);
   const [newJob, setNewJob] = useState({
     title: "",
     description: "",
@@ -29,14 +30,22 @@ const Recruitment = () => {
     };
 
     const fetchApplicants = async () => {
-      const applicantsSnapshot = await getDocs(collection(db, "applicants"));
+      const applicantsSnapshot = await getDocs(collection(db, "job_applicants"));
       setApplicants(
         applicantsSnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
       );
     };
 
+    const fetchEmployees = async () => {
+      const employeesSnapshot = await getDocs(collection(db, "actual_employees"));
+      setEmployees(
+        employeesSnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+      );
+    };
+
     fetchJobs();
     fetchApplicants();
+    fetchEmployees();
   }, []);
 
   const handleAddJob = async () => {
@@ -46,15 +55,7 @@ const Recruitment = () => {
     }
 
     try {
-      const docRef = await addDoc(collection(db, "job_postings"), newJob);
-      setJobs([...jobs, { ...newJob, id: docRef.id }]);
-      setNewJob({
-        title: "",
-        description: "",
-        department: "",
-        requirements: "",
-        location: "",
-      });
+      await addDoc(collection(db, "job_postings"), newJob);
       alert("Job posted successfully!");
     } catch (error) {
       console.error("Error adding job:", error);
@@ -69,7 +70,7 @@ const Recruitment = () => {
     }
 
     try {
-      const applicantRef = doc(db, "applicants", applicantId);
+      const applicantRef = doc(db, "job_applicants", applicantId);
       await updateDoc(applicantRef, { status: statusUpdate });
       setApplicants((prev) =>
         prev.map((applicant) =>
@@ -88,49 +89,56 @@ const Recruitment = () => {
 
   const renderSection = () => {
     switch (currentSection) {
-        case "create":
-            return (
-              <div className="recruitment-container">
-                <div className="form-wrapper">
-                  <h2>Create New Job</h2>
-                  <form>
-                    <input
-                      type="text"
-                      placeholder="Job Title"
-                      value={newJob.title}
-                      onChange={(e) => setNewJob({ ...newJob, title: e.target.value })}
-                    />
-                    <textarea
-                      placeholder="Job Description"
-                      value={newJob.description}
-                      onChange={(e) => setNewJob({ ...newJob, description: e.target.value })}
-                    />
-                    <input
-                      type="text"
-                      placeholder="Department"
-                      value={newJob.department}
-                      onChange={(e) => setNewJob({ ...newJob, department: e.target.value })}
-                    />
-                    <input
-                      type="text"
-                      placeholder="Requirements"
-                      value={newJob.requirements}
-                      onChange={(e) => setNewJob({ ...newJob, requirements: e.target.value })}
-                    />
-                    <input
-                      type="text"
-                      placeholder="Location"
-                      value={newJob.location}
-                      onChange={(e) => setNewJob({ ...newJob, location: e.target.value })}
-                    />
-                    <button type="button" onClick={handleAddJob}>
-                      Post Job
-                    </button>
-                  </form>
-                </div>
-              </div>
-            );
-          
+      case "create":
+        return (
+          <div className="recruitment-container">
+            <h2>Create New Job</h2>
+            <form>
+              <input
+                type="text"
+                placeholder="Job Title"
+                value={newJob.title}
+                onChange={(e) =>
+                  setNewJob({ ...newJob, title: e.target.value })
+                }
+              />
+              <textarea
+                placeholder="Job Description"
+                value={newJob.description}
+                onChange={(e) =>
+                  setNewJob({ ...newJob, description: e.target.value })
+                }
+              />
+              <input
+                type="text"
+                placeholder="Department"
+                value={newJob.department}
+                onChange={(e) =>
+                  setNewJob({ ...newJob, department: e.target.value })
+                }
+              />
+              <input
+                type="text"
+                placeholder="Requirements"
+                value={newJob.requirements}
+                onChange={(e) =>
+                  setNewJob({ ...newJob, requirements: e.target.value })
+                }
+              />
+              <input
+                type="text"
+                placeholder="Location"
+                value={newJob.location}
+                onChange={(e) =>
+                  setNewJob({ ...newJob, location: e.target.value })
+                }
+              />
+              <button type="button" onClick={handleAddJob}>
+                Post Job
+              </button>
+            </form>
+          </div>
+        );
       case "view-jobs":
         return (
           <div className="jobs-list">
@@ -140,7 +148,9 @@ const Recruitment = () => {
                 <li key={job.id}>
                   <h4>{job.title}</h4>
                   <p>{job.description}</p>
-                  <small>{job.department} | {job.location}</small>
+                  <small>
+                    {job.department} | {job.location}
+                  </small>
                 </li>
               ))}
             </ul>
@@ -161,30 +171,39 @@ const Recruitment = () => {
                 </tr>
               </thead>
               <tbody>
-                {applicants.map((applicant) => (
-                  <tr key={applicant.id}>
-                    <td>{applicant.name}</td>
-                    <td>{applicant.email}</td>
-                    <td>{jobs.find((job) => job.id === applicant.jobId)?.title}</td>
-                    <td>{applicant.status}</td>
-                    <td>
-                      <select
-                        value={statusUpdate}
-                        onChange={(e) => setStatusUpdate(e.target.value)}
-                      >
-                        <option value="">Update Status</option>
-                        <option value="Under Review">Under Review</option>
-                        <option value="Shortlisted">Shortlisted</option>
-                        <option value="Rejected">Rejected</option>
-                      </select>
-                      <button
-                        onClick={() => handleUpdateApplicantStatus(applicant.id)}
-                      >
-                        Update
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                {applicants.map((applicant) => {
+                  const employee = employees.find(
+                    (emp) => emp.id === applicant.actual_employee_id
+                  );
+                  const job = jobs.find((job) => job.id === applicant.job_id);
+
+                  return (
+                    <tr key={applicant.id}>
+                      <td>{employee?.FullName || "Unknown"}</td>
+                      <td>{employee?.Email || "Unknown"}</td>
+                      <td>{job?.title || "Unknown"}</td>
+                      <td>{applicant.status || "Applied"}</td>
+                      <td>
+                        <select
+                          value={statusUpdate}
+                          onChange={(e) => setStatusUpdate(e.target.value)}
+                        >
+                          <option value="">Update Status</option>
+                          <option value="Under Review">Under Review</option>
+                          <option value="Shortlisted">Shortlisted</option>
+                          <option value="Rejected">Rejected</option>
+                        </select>
+                        <button
+                          onClick={() =>
+                            handleUpdateApplicantStatus(applicant.id)
+                          }
+                        >
+                          Update
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -210,8 +229,6 @@ const Recruitment = () => {
       </div>
       <div className="main-content">{renderSection()}</div>
     </div>
-
-    
   );
 };
 

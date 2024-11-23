@@ -11,8 +11,8 @@ const TimeandAttendancePage = () => {
   const [currentDateTime, setCurrentDateTime] = useState("");
   const [timeFilter, setTimeFilter] = useState("all");
 
+  // Update current date and time
   useEffect(() => {
-    // Update current date and time
     const updateDateTime = () => {
       const now = new Date();
       const options = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
@@ -26,59 +26,63 @@ const TimeandAttendancePage = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // Fetch attendance and employee data
   useEffect(() => {
     const fetchAttendance = async () => {
-        try {
-            console.log("Fetching data...");
-            const employeesSnapshot = await getDocs(collection(db, "actual_employees"));
-            const attendanceSnapshot = await getDocs(collection(db, "attendance"));
-    
-            const attendanceMap = {};
-            attendanceSnapshot.forEach((doc) => {
-                const data = doc.data();
-                if (data.date && data.employeeId) {
-                    // Parse the `data.date` to a valid JavaScript Date object
-                    const parsedDate =
-                        typeof data.date === "string"
-                            ? new Date(data.date) // If stored as ISO string
-                            : new Date(data.date.seconds * 1000); // If stored as Firestore Timestamp or numeric
-                    attendanceMap[data.employeeId] = {
-                        date: parsedDate,
-                        status: data.status,
-                    };
-                }
-            });
-    
-            console.log("Attendance Map:", attendanceMap);
-    
-            const employees = [];
-            employeesSnapshot.forEach((doc) => {
-                const employee = doc.data();
-                const attendance = attendanceMap[doc.id] || { date: null, status: "Absent" };
-                employees.push({
-                    id: doc.id,
-                    name: employee.FullName || "Unknown",
-                    department: employee.Department || "Not Assigned",
-                    status: attendance.status,
-                    timeClockedIn: attendance.date
-                        ? attendance.date.toLocaleString()
-                        : "Not Clocked In",
-                });
-            });
-    
-            console.log("Mapped Employees:", employees);
-    
-            setAttendanceData(employees);
-            setFilteredData(employees);
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        }
+      try {
+        const employeesSnapshot = await getDocs(collection(db, "actual_employees"));
+        const attendanceSnapshot = await getDocs(collection(db, "attendance"));
+
+        const attendanceMap = {};
+        attendanceSnapshot.forEach((doc) => {
+          const data = doc.data();
+          if (data.date && data.employeeId) {
+            const clockInDate = new Date(data.date.seconds * 1000); // Firestore Timestamp
+            const clockOutDate = data.clockOut
+              ? new Date(data.clockOut.seconds * 1000)
+              : null;
+
+            attendanceMap[data.employeeId] = {
+              date: clockInDate,
+              clockOut: clockOutDate,
+            };
+          }
+        });
+
+        const employees = [];
+        employeesSnapshot.forEach((doc) => {
+          const employee = doc.data();
+          const attendance = attendanceMap[doc.id] || { date: null, clockOut: null };
+
+          // Determine attendance status
+          let attendanceStatus = "Absent";
+          if (attendance.date && !attendance.clockOut) {
+            attendanceStatus = "Present";
+          } else if (attendance.date && attendance.clockOut) {
+            attendanceStatus = "Logged Off";
+          }
+
+          employees.push({
+            id: doc.id,
+            name: employee.FullName || "Unknown",
+            department: employee.Department || "Not Assigned",
+            status: attendanceStatus,
+            timeClockedIn: attendance.date ? attendance.date.toLocaleString() : "Not Clocked In",
+            timeClockedOut: attendance.clockOut ? attendance.clockOut.toLocaleString() : "Not Clocked Out",
+          });
+        });
+
+        setAttendanceData(employees);
+        setFilteredData(employees);
+      } catch (error) {
+        console.error("Error fetching attendance data:", error);
+      }
     };
-    
 
     fetchAttendance();
   }, []);
 
+  // Filter attendance data
   useEffect(() => {
     const filterByTime = (data) => {
       const now = new Date();
@@ -106,7 +110,6 @@ const TimeandAttendancePage = () => {
       return matchesName && matchesDepartment;
     });
 
-    console.log("Filtered Data:", filtered);
     setFilteredData(filtered);
   }, [searchName, searchDepartment, attendanceData, timeFilter]);
 
@@ -145,7 +148,8 @@ const TimeandAttendancePage = () => {
             <th>Employee Name</th>
             <th>Department</th>
             <th>Attendance Status</th>
-            <th>Timestamp</th>
+            <th>Clock-In Time</th>
+            <th>Clock-Out Time</th>
           </tr>
         </thead>
         <tbody>
@@ -156,11 +160,12 @@ const TimeandAttendancePage = () => {
                 <td>{record.department}</td>
                 <td>{record.status}</td>
                 <td>{record.timeClockedIn}</td>
+                <td>{record.timeClockedOut}</td>
               </tr>
             ))
           ) : (
             <tr>
-              <td colSpan="4">No records found</td>
+              <td colSpan="5">No records found</td>
             </tr>
           )}
         </tbody>

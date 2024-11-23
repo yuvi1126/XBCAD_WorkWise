@@ -7,7 +7,7 @@ import AddAdminPage from "./pages/AddAdmin";
 import EmployeePage from "./pages/EmployeePage";
 import TrainingPage from "./pages/Training";
 import Recruitment from "./pages/Recruitment";
-import PayrollPage from "./pages/Payroll";
+import Payroll from "./pages/Payroll";
 import AdminLoginPage from "./pages/AdminLoginPage";
 import TimeandAttendancePage from "./pages/TimeandAttendancePage";
 import PerformancePage from "./pages/PerformancePage";
@@ -31,7 +31,7 @@ const App = () => {
         <Route path="/add-admin" element={<AddAdminPage />} />
         <Route path="/learning-development" element={<TrainingPage />} />
         <Route path="/recruitment-onboarding" element={<Recruitment />} />
-        <Route path="/payroll" element={<PayrollPage />} />
+        <Route path="/payroll" element={<Payroll />} />
         <Route path="/add-employee" element={<AddEmployee />} />
         <Route path="/time-attendance-tracking" element={<TimeandAttendancePage />} />
         <Route path="/performance-management" element={<PerformancePage />} />

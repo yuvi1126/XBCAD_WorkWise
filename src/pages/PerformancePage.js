@@ -1,37 +1,71 @@
-import React, { useState, useEffect } from 'react';
-import { getFirestore, collection, getDocs, updateDoc, doc } from 'firebase/firestore';
-import './PerformancePage.css'; // Ensure you have the necessary CSS file.
+import React, { useState, useEffect } from "react";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  getDoc,
+  deleteDoc,
+  setDoc,
+  doc,
+} from "firebase/firestore";
+import "./PerformancePage.css";
 
 const PerformancePage = () => {
   const [performanceData, setPerformanceData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const [searchName, setSearchName] = useState('');
-  const [searchMonth, setSearchMonth] = useState('');
-  const [searchYear, setSearchYear] = useState('');
-  const [editingId, setEditingId] = useState(null);
-  const [editData, setEditData] = useState({});
+  const [searchName, setSearchName] = useState("");
+  const [editStates, setEditStates] = useState({}); // Track feedback and score for each row
   const itemsPerPage = 5;
   const [currentPage, setCurrentPage] = useState(1);
 
   const db = getFirestore();
 
-  // Fetch data from Firestore
   useEffect(() => {
     const fetchPerformanceData = async () => {
-      const dataRef = collection(db, 'performance_data');
-      const snapshot = await getDocs(dataRef);
-      const data = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setPerformanceData(data);
-      setFilteredData(data); // Initialize filtered data
+      const goalsRef = collection(db, "goals");
+      const employeesRef = collection(db, "actual_employees");
+
+      try {
+        // Fetch goals and employees
+        const [goalsSnapshot, employeesSnapshot] = await Promise.all([
+          getDocs(goalsRef),
+          getDocs(employeesRef),
+        ]);
+
+        // Create a map of actual_employee_id to their full names
+        const employeesMap = employeesSnapshot.docs.reduce((map, doc) => {
+          map[doc.id] = doc.data().FullName || "Unknown";
+          return map;
+        }, {});
+
+        // Map goals to include the employee name from the map
+        const data = goalsSnapshot.docs.map((doc) => {
+          const goalData = doc.data();
+          const employeeName =
+            employeesMap[goalData.actual_employee_id] || "Unknown";
+
+          return {
+            id: doc.id,
+            employeeId: goalData.actual_employee_id, // Use actual_employee_id
+            employeeName,
+            description: goalData.description,
+            start_date: goalData.start_date,
+            end_date: goalData.end_date,
+          };
+        });
+
+        setPerformanceData(data);
+        setFilteredData(data);
+      } catch (error) {
+        console.error("Error fetching performance data:", error);
+        alert("Failed to load performance data. Please try again.");
+      }
     };
 
     fetchPerformanceData();
   }, [db]);
 
-  // Handle filtering
+  // Handle filtering by employee name
   useEffect(() => {
     let data = [...performanceData];
     if (searchName) {
@@ -39,29 +73,72 @@ const PerformancePage = () => {
         item.employeeName.toLowerCase().includes(searchName.toLowerCase())
       );
     }
-    if (searchMonth) {
-      data = data.filter((item) => item.month.toLowerCase() === searchMonth.toLowerCase());
-    }
-    if (searchYear) {
-      data = data.filter((item) => item.year === searchYear);
-    }
     setFilteredData(data);
-  }, [searchName, searchMonth, searchYear, performanceData]);
+  }, [searchName, performanceData]);
 
-  // Handle inline editing
-  const handleEdit = (id, field, value) => {
-    setEditData({ ...editData, [field]: value });
-    setEditingId(id);
+  // Handle feedback and score changes
+  const handleInputChange = (id, field, value) => {
+    setEditStates((prev) => ({
+      ...prev,
+      [id]: {
+        ...prev[id],
+        [field]: value,
+      },
+    }));
   };
 
-  const saveEdit = async (id) => {
-    const recordRef = doc(db, 'performance_data', id);
-    await updateDoc(recordRef, editData);
-    setPerformanceData(
-      performanceData.map((item) => (item.id === id ? { ...item, ...editData } : item))
-    );
-    setEditingId(null);
-    setEditData({});
+  // Save feedback and score, move to goals_feedback, and remove from goals
+  const saveFeedbackAndScore = async (id) => {
+    const { feedback = "", score = "" } = editStates[id] || {};
+
+    if (!feedback || !score) {
+      alert("Please provide both feedback and a score.");
+      return;
+    }
+
+    try {
+      const parsedScore = parseFloat(score);
+      if (isNaN(parsedScore)) {
+        alert("Score must be a valid number.");
+        return;
+      }
+
+      const recordRef = doc(db, "goals", id);
+      const goalSnapshot = await getDoc(recordRef); // Use getDoc to fetch a single document
+
+      if (!goalSnapshot.exists()) {
+        alert("Goal not found.");
+        return;
+      }
+
+      const goalData = goalSnapshot.data();
+
+      // Create a new entry in `goals_feedback`
+      const feedbackRef = doc(collection(db, "goals_feedback"), id); // Use the same ID as the goal
+      await setDoc(feedbackRef, {
+        actual_employee_id: goalData.actual_employee_id,
+        goal_id: id,
+        description: goalData.description,
+        start_date: goalData.start_date,
+        end_date: goalData.end_date,
+        feedback,
+        score: parsedScore, // Save score as a number
+        updated_at: new Date(),
+      });
+
+      // Remove the goal from the `goals` collection
+      await deleteDoc(recordRef);
+
+      // Update local state
+      setPerformanceData((prev) => prev.filter((item) => item.id !== id));
+      setFilteredData((prev) => prev.filter((item) => item.id !== id));
+
+      alert("Feedback and score saved successfully!");
+      setEditStates((prev) => ({ ...prev, [id]: {} })); // Clear state for this row
+    } catch (error) {
+      console.error("Error saving feedback and score:", error);
+      alert("Failed to save feedback and score. Please try again.");
+    }
   };
 
   // Paginated Data
@@ -82,18 +159,6 @@ const PerformancePage = () => {
           value={searchName}
           onChange={(e) => setSearchName(e.target.value)}
         />
-        <input
-          type="text"
-          placeholder="Filter by Month (e.g., October)"
-          value={searchMonth}
-          onChange={(e) => setSearchMonth(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Filter by Year (e.g., 2024)"
-          value={searchYear}
-          onChange={(e) => setSearchYear(e.target.value)}
-        />
       </div>
 
       {/* Performance Table */}
@@ -101,58 +166,56 @@ const PerformancePage = () => {
         <thead>
           <tr>
             <th>Employee Name</th>
-            <th>Month</th>
-            <th>Review</th>
-            <th>Year</th>
+            <th>Goal Description</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Score</th>
+            <th>Feedback</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {paginatedData.map((item) => (
-            <tr key={item.id}>
-              <td>
-                {editingId === item.id ? (
+          {paginatedData.map((item) => {
+            const currentEditState = editStates[item.id] || {};
+            return (
+              <tr key={item.id}>
+                <td>{item.employeeName}</td>
+                <td>{item.description}</td>
+                <td>
+                  {item.start_date
+                    ? new Date(item.start_date.seconds * 1000).toLocaleDateString()
+                    : "Invalid Date"}
+                </td>
+                <td>
+                  {item.end_date
+                    ? new Date(item.end_date.seconds * 1000).toLocaleDateString()
+                    : "Invalid Date"}
+                </td>
+                <td>
                   <input
-                    type="text"
-                    defaultValue={item.employeeName}
-                    onChange={(e) => handleEdit(item.id, 'employeeName', e.target.value)}
+                    type="number"
+                    value={currentEditState.score || ""}
+                    onChange={(e) =>
+                      handleInputChange(item.id, "score", e.target.value)
+                    }
                   />
-                ) : (
-                  item.employeeName
-                )}
-              </td>
-              <td>
-                {editingId === item.id ? (
-                  <input
-                    type="text"
-                    defaultValue={item.month}
-                    onChange={(e) => handleEdit(item.id, 'month', e.target.value)}
+                </td>
+                <td>
+                  <textarea
+                    value={currentEditState.feedback || ""}
+                    onChange={(e) =>
+                      handleInputChange(item.id, "feedback", e.target.value)
+                    }
                   />
-                ) : (
-                  item.month
-                )}
-              </td>
-              <td>{item.review}</td>
-              <td>
-                {editingId === item.id ? (
-                  <input
-                    type="text"
-                    defaultValue={item.year}
-                    onChange={(e) => handleEdit(item.id, 'year', e.target.value)}
-                  />
-                ) : (
-                  item.year
-                )}
-              </td>
-              <td>
-                {editingId === item.id ? (
-                  <button onClick={() => saveEdit(item.id)}>Save</button>
-                ) : (
-                  <button onClick={() => setEditingId(item.id)}>Edit</button>
-                )}
-              </td>
-            </tr>
-          ))}
+                </td>
+                <td>
+                  <button onClick={() => saveFeedbackAndScore(item.id)}>
+                    Submit Feedback
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
 

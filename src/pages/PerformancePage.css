@@ -1,56 +1,66 @@
 /* Wrapper styling */
 .performance-page {
-    padding: 20px;
-    font-family: Arial, sans-serif;
+    padding: 30px;
+    font-family: "Poppins", sans-serif;
     color: #333;
-    background-color: #f9f9f9; /* Matches modern, clean design */
+    background-color: #f7f9fc; /* Soft background for a professional look */
+    border-radius: 12px;
+    max-width: 1200px;
+    margin: 20px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
   
   /* Title styling */
   .performance-page h1 {
-    font-size: 24px;
+    font-size: 2rem;
     color: #444;
     margin-bottom: 20px;
+    text-align: center;
   }
   
   /* Search bar container */
   .search-bar {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
+    flex-wrap: wrap;
   }
   
   /* Search input */
   .search-bar input {
-    padding: 10px;
-    font-size: 16px;
+    padding: 12px 15px;
+    font-size: 1rem;
     border: 1px solid #ddd;
-    border-radius: 5px;
-    width: 300px;
+    border-radius: 8px;
+    width: 250px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
   }
   
   .search-bar input:focus {
-    border-color: #007BFF; /* Highlight color for focus */
+    border-color: #007bff;
     outline: none;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
   }
   
   /* Search button */
   .search-bar button {
-    padding: 10px 20px;
-    font-size: 16px;
+    padding: 12px 20px;
+    font-size: 1rem;
     color: white;
-    background-color: #007BFF; /* Primary theme color */
+    background-color: #007bff;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
   }
   
   .search-bar button:hover {
     background-color: #0056b3;
+    transform: translateY(-2px);
   }
   
   /* Table styling */
@@ -58,40 +68,103 @@
     width: 100%;
     border-collapse: collapse;
     background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-top: 20px;
   }
   
   /* Table headers */
   .performance-table th {
-    background-color: #007BFF; /* Matches search button */
+    background-color: #007bff;
     color: white;
     text-align: left;
-    padding: 10px;
-    font-size: 14px;
+    padding: 12px 15px;
+    font-size: 1rem;
+    font-weight: 600;
   }
   
   /* Table rows */
   .performance-table td {
-    padding: 10px;
+    padding: 12px 15px;
     border: 1px solid #ddd;
-    font-size: 14px;
+    font-size: 0.9rem;
+    color: #555;
   }
   
   /* Alternating row colors */
   .performance-table tr:nth-child(even) {
-    background-color: #f2f2f2;
+    background-color: #f9f9f9;
   }
   
   /* Hover effect for rows */
   .performance-table tr:hover {
-    background-color: #f1f9ff;
+    background-color: #eef7ff;
     transition: background-color 0.3s ease;
+  }
+  
+  /* Pagination container */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  .pagination button {
+    padding: 10px 15px;
+    font-size: 0.9rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .pagination button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+  }
+  
+  .pagination button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    transform: none;
   }
   
   /* Empty state message */
   .empty-state {
     text-align: center;
     padding: 20px;
-    font-size: 16px;
-    color: #666;
+    font-size: 1rem;
+    color: #666;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-top: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .performance-page {
+      padding: 20px;
+    }
+  
+    .search-bar input {
+      width: 100%;
+    }
+  
+    .performance-table td,
+    .performance-table th {
+      font-size: 0.8rem;
+      padding: 10px;
+    }
+  
+    .pagination button {
+      padding: 8px 12px;
+      font-size: 0.8rem;
+    }
+  }
+  

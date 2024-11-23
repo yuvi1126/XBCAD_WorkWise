@@ -72,13 +72,19 @@ const EmployeePage = () => {
 
   return (
     <div className="employee-page">
-      <button
+      {/* <button
         className="back-button"
         onClick={() => (window.location.href = "/dashboard")}
       >
         &larr; Back to Dashboard
-      </button>
+      </button> */}
       <header className="employee-header">
+      <button
+        className=""
+        onClick={() => (window.location.href = "/dashboard")}
+      >
+        &larr; Back to Dashboard
+      </button>
         <h1>Employee Management</h1>
         <div className="actions">
           <input
@@ -156,6 +162,8 @@ const EmployeePage = () => {
                 </button>
               </div>
             ))}
+            
+          
           </div>
         )}
       </section>

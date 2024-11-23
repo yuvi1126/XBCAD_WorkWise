@@ -70,9 +70,15 @@ const AddEmployeePage = () => {
       setError("Failed to add employee. Please try again.");
     }
   };
+  const handleBackToDashboard = () => {
+    window.location.href = "/dashboard"; // Replace with the correct route to your dashboard
+  };
 
   return (
     <div className="add-employee-container">
+      <button className="back-to-dashboard" onClick={handleBackToDashboard}>
+        &larr; Back to Dashboard
+      </button>
       <div className="form-section">
         <h1 className="form-title">Add New Employee</h1>
         {error && <p className="error-message">{error}</p>} {/* Display error message */}

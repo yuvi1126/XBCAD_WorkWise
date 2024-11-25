@@ -73,3 +73,44 @@ Start the development server:
 
 npm start
 Access the app at http://localhost:3000.
+
+
+Running the App Locally
+Ensure all dependencies are installed.
+
+Start the app with:
+
+npm start
+Open the app in your browser at http://localhost:3000.
+Deploying to Firebase
+Install Firebase CLI:
+
+npm install -g firebase-tools
+Log in to Firebase:
+
+firebase login
+Initialize Firebase in the project:
+bash
+Copy code
+firebase init
+Deploy to Firebase:
+
+firebase deploy
+Security Measures
+Authentication: Firebase Authentication (Email/Password with role-based access control).
+Data Protection: Real-time database rules to restrict access to authorized users.
+Input Validation: Regex patterns to sanitize user inputs.
+Contributing
+We welcome contributions to improve the WorkWise HR Web Application. To contribute:
+
+Fork the repository.
+Create a feature branch:
+
+git checkout -b feature/new-feature
+Commit your changes:
+
+git commit -m "Add new feature"
+Push to your forked repository:
+
+git push origin feature/new-feature
+Open a Pull Request.

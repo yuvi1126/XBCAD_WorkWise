@@ -9,12 +9,12 @@
   --table-hover: rgba(52, 152, 219, 0.2);
 }
 
-body {
+/* body {
   margin: 0;
   font-family: Arial, sans-serif;
   background: var(--bg-gradient);
   color: var(--text-primary);
-}
+} */
 
 .leave-requests-page {
   padding: 40px;
@@ -111,4 +111,12 @@ body {
 
 .deny-button:hover {
   background-color: #c0392b;
+}
+
+.search-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
 }

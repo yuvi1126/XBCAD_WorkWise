@@ -15,7 +15,12 @@ const TimeandAttendancePage = () => {
   useEffect(() => {
     const updateDateTime = () => {
       const now = new Date();
-      const options = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
+      const options = {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      };
       const date = now.toLocaleDateString(undefined, options);
       const time = now.toLocaleTimeString();
       setCurrentDateTime(`${date}, ${time}`);
@@ -30,7 +35,9 @@ const TimeandAttendancePage = () => {
   useEffect(() => {
     const fetchAttendance = async () => {
       try {
-        const employeesSnapshot = await getDocs(collection(db, "actual_employees"));
+        const employeesSnapshot = await getDocs(
+          collection(db, "actual_employees")
+        );
         const attendanceSnapshot = await getDocs(collection(db, "attendance"));
 
         const attendanceMap = {};
@@ -52,7 +59,10 @@ const TimeandAttendancePage = () => {
         const employees = [];
         employeesSnapshot.forEach((doc) => {
           const employee = doc.data();
-          const attendance = attendanceMap[doc.id] || { date: null, clockOut: null };
+          const attendance = attendanceMap[doc.id] || {
+            date: null,
+            clockOut: null,
+          };
 
           // Determine attendance status
           let attendanceStatus = "Absent";
@@ -67,8 +77,12 @@ const TimeandAttendancePage = () => {
             name: employee.FullName || "Unknown",
             department: employee.Department || "Not Assigned",
             status: attendanceStatus,
-            timeClockedIn: attendance.date ? attendance.date.toLocaleString() : "Not Clocked In",
-            timeClockedOut: attendance.clockOut ? attendance.clockOut.toLocaleString() : "Not Clocked Out",
+            timeClockedIn: attendance.date
+              ? attendance.date.toLocaleString()
+              : "Not Clocked In",
+            timeClockedOut: attendance.clockOut
+              ? attendance.clockOut.toLocaleString()
+              : "Not Clocked Out",
           });
         });
 
@@ -105,8 +119,12 @@ const TimeandAttendancePage = () => {
     };
 
     const filtered = filterByTime(attendanceData).filter((record) => {
-      const matchesName = record.name.toLowerCase().includes(searchName.toLowerCase());
-      const matchesDepartment = record.department.toLowerCase().includes(searchDepartment.toLowerCase());
+      const matchesName = record.name
+        .toLowerCase()
+        .includes(searchName.toLowerCase());
+      const matchesDepartment = record.department
+        .toLowerCase()
+        .includes(searchDepartment.toLowerCase());
       return matchesName && matchesDepartment;
     });
 
@@ -114,62 +132,75 @@ const TimeandAttendancePage = () => {
   }, [searchName, searchDepartment, attendanceData, timeFilter]);
 
   return (
-    <div className="time-attendance-page-container">
-      <div className="date-time-container">
-        <h2>Current Date and Time</h2>
-        <p>{currentDateTime}</p>
+    <div className="recruitment-page">
+      <div className="side-panel">
+        <h2>Timekeeping</h2>
+        <ul>
+          <li onClick={() => (window.location.href = "/dashboard")}>Back</li>
+        </ul>
       </div>
+      <div className="main-content-recruitment">
+        <div className="date-time-container">
+          <h2>Current Date and Time</h2>
+          <p>{currentDateTime}</p>
+        </div>
 
-      <h1>Employee Attendance</h1>
+        <h1 className="Title-Text">Employee Attendance</h1>
 
-      <div className="search-container">
-        <input
-          type="text"
-          placeholder="Search by Name"
-          value={searchName}
-          onChange={(e) => setSearchName(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Search by Department"
-          value={searchDepartment}
-          onChange={(e) => setSearchDepartment(e.target.value)}
-        />
-        <select value={timeFilter} onChange={(e) => setTimeFilter(e.target.value)}>
-          <option value="all">All</option>
-          <option value="weekly">Last 7 Days</option>
-          <option value="monthly">Last 30 Days</option>
-        </select>
-      </div>
+        <div className="search-container">
+          <input
+            type="text"
+            placeholder="Search by Name"
+            value={searchName}
+            onChange={(e) => setSearchName(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Search by Department"
+            value={searchDepartment}
+            onChange={(e) => setSearchDepartment(e.target.value)}
+          />
+          <select
+            value={timeFilter}
+            onChange={(e) => setTimeFilter(e.target.value)}
+          >
+            <option value="all">All</option>
+            <option value="weekly">Last 7 Days</option>
+            <option value="monthly">Last 30 Days</option>
+          </select>
+        </div>
 
-      <table className="attendance-table">
-        <thead>
-          <tr>
-            <th>Employee Name</th>
-            <th>Department</th>
-            <th>Attendance Status</th>
-            <th>Clock-In Time</th>
-            <th>Clock-Out Time</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredData.length > 0 ? (
-            filteredData.map((record, index) => (
-              <tr key={index}>
-                <td>{record.name}</td>
-                <td>{record.department}</td>
-                <td>{record.status}</td>
-                <td>{record.timeClockedIn}</td>
-                <td>{record.timeClockedOut}</td>
+        <div className="base-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Employee Name</th>
+                <th>Department</th>
+                <th>Attendance Status</th>
+                <th>Clock-In Time</th>
+                <th>Clock-Out Time</th>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="5">No records found</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+            </thead>
+            <tbody>
+              {filteredData.length > 0 ? (
+                filteredData.map((record, index) => (
+                  <tr key={index}>
+                    <td>{record.name}</td>
+                    <td>{record.department}</td>
+                    <td>{record.status}</td>
+                    <td>{record.timeClockedIn}</td>
+                    <td>{record.timeClockedOut}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="5">No records found</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 };

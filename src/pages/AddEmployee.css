@@ -10,12 +10,12 @@
   --gradient-bg: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
 }
 
-body {
+/* body {
   font-family: 'Poppins', sans-serif;
   margin: 0;
   background: var(--gradient-bg);
   color: var(--dark-text-primary);
-}
+} */
 
 .add-employee-container {
   display: flex;
@@ -200,4 +200,15 @@ body {
 
 .back-to-dashboard:hover {
   background-color: var(--button-hover-color);
+}
+
+.login-container-fullscreen {
+  z-index: 2;
+  background-color: #1c2333;
+  border-radius: 15px;
+  padding: 40px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  color: #ffffff;
+  animation: fadeIn 1.5s ease;
 }

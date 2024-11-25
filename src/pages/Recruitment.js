@@ -8,20 +8,30 @@ import {
   doc,
 } from "firebase/firestore";
 import "./Recruitment.css";
+import { useNavigate } from "react-router-dom";
 
 const Recruitment = () => {
   const [jobs, setJobs] = useState([]);
   const [applicants, setApplicants] = useState([]);
   const [employees, setEmployees] = useState([]);
+  const navigate = useNavigate();
   const [newJob, setNewJob] = useState({
-    title: "",
-    description: "",
-    department: "",
-    requirements: "",
-    location: "",
+    title: '',
+    description: '',
+    department: '',
+    requirements: '',
+    location: '',
   });
   const [currentSection, setCurrentSection] = useState("create");
   const [statusUpdate, setStatusUpdate] = useState("");
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewJob(prevJob => ({
+      ...prevJob,
+      [name]: value,
+    }));
+  };
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -91,53 +101,66 @@ const Recruitment = () => {
     switch (currentSection) {
       case "create":
         return (
-          <div className="recruitment-container">
-            <h2>Create New Job</h2>
-            <form>
+          <div className="job-creation-form">
+          <h2>Create New Job</h2>
+          <form onSubmit={handleAddJob}>
+            <div className="form-group">
+              <label htmlFor="title">Job Title</label>
               <input
                 type="text"
-                placeholder="Job Title"
+                id="title"
+                name="title"
                 value={newJob.title}
-                onChange={(e) =>
-                  setNewJob({ ...newJob, title: e.target.value })
-                }
+                onChange={handleInputChange}
+                required
               />
+            </div>
+            <div className="form-group">
+              <label htmlFor="description">Job Description</label>
               <textarea
-                placeholder="Job Description"
+                id="description"
+                name="description"
                 value={newJob.description}
-                onChange={(e) =>
-                  setNewJob({ ...newJob, description: e.target.value })
-                }
+                onChange={handleInputChange}
+                required
               />
+            </div>
+            <div className="form-group">
+              <label htmlFor="department">Department</label>
               <input
                 type="text"
-                placeholder="Department"
+                id="department"
+                name="department"
                 value={newJob.department}
-                onChange={(e) =>
-                  setNewJob({ ...newJob, department: e.target.value })
-                }
+                onChange={handleInputChange}
+                required
               />
+            </div>
+            <div className="form-group">
+              <label htmlFor="requirements">Requirements</label>
               <input
                 type="text"
-                placeholder="Requirements"
+                id="requirements"
+                name="requirements"
                 value={newJob.requirements}
-                onChange={(e) =>
-                  setNewJob({ ...newJob, requirements: e.target.value })
-                }
+                onChange={handleInputChange}
+                required
               />
+            </div>
+            <div className="form-group">
+              <label htmlFor="location">Location</label>
               <input
                 type="text"
-                placeholder="Location"
+                id="location"
+                name="location"
                 value={newJob.location}
-                onChange={(e) =>
-                  setNewJob({ ...newJob, location: e.target.value })
-                }
+                onChange={handleInputChange}
+                required
               />
-              <button type="button" onClick={handleAddJob}>
-                Post Job
-              </button>
-            </form>
-          </div>
+            </div>
+            <button type="submit">Post Job</button>
+          </form>
+        </div>
         );
       case "view-jobs":
         return (
@@ -158,7 +181,7 @@ const Recruitment = () => {
         );
       case "view-applicants":
         return (
-          <div className="applicants-list">
+          <div className="base-table">
             <h3>View Applicants</h3>
             <table>
               <thead>
@@ -225,9 +248,12 @@ const Recruitment = () => {
           <li onClick={() => setCurrentSection("view-applicants")}>
             View Applicants
           </li>
+          <li onClick={() =>navigate("/dashboard")}>
+            Back
+          </li>
         </ul>
       </div>
-      <div className="main-content">{renderSection()}</div>
+      <div className="main-content-recruitment">{renderSection()}</div>
     </div>
   );
 };

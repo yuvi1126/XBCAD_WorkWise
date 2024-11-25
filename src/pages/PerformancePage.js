@@ -148,96 +148,121 @@ const PerformancePage = () => {
   );
 
   return (
-    <div className="performance-page">
-      <h1>Performance Management</h1>
-
-      {/* Filters */}
-      <div className="filters">
-        <input
-          type="text"
-          placeholder="Search by Employee Name"
-          value={searchName}
-          onChange={(e) => setSearchName(e.target.value)}
-        />
+    <div className="recruitment-page">
+      <div className="side-panel">
+        <h2>Performance</h2>
+        <ul>
+          <li onClick={() => (window.location.href = "/dashboard")}>Back</li>
+        </ul>
       </div>
+      <div className="main-content-recruitment">
+        <div className="">
+          <h1>Performance Management</h1>
 
-      {/* Performance Table */}
-      <table className="performance-table">
-        <thead>
-          <tr>
-            <th>Employee Name</th>
-            <th>Goal Description</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Score</th>
-            <th>Feedback</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {paginatedData.map((item) => {
-            const currentEditState = editStates[item.id] || {};
-            return (
-              <tr key={item.id}>
-                <td>{item.employeeName}</td>
-                <td>{item.description}</td>
-                <td>
-                  {item.start_date
-                    ? new Date(item.start_date.seconds * 1000).toLocaleDateString()
-                    : "Invalid Date"}
-                </td>
-                <td>
-                  {item.end_date
-                    ? new Date(item.end_date.seconds * 1000).toLocaleDateString()
-                    : "Invalid Date"}
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    value={currentEditState.score || ""}
-                    onChange={(e) =>
-                      handleInputChange(item.id, "score", e.target.value)
-                    }
-                  />
-                </td>
-                <td>
-                  <textarea
-                    value={currentEditState.feedback || ""}
-                    onChange={(e) =>
-                      handleInputChange(item.id, "feedback", e.target.value)
-                    }
-                  />
-                </td>
-                <td>
-                  <button onClick={() => saveFeedbackAndScore(item.id)}>
-                    Submit Feedback
-                  </button>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+          {/* Filters */}
+          <div className="filters">
+            <input
+              type="text"
+              className="base-small-input"
+              placeholder="Search by Employee Name"
+              value={searchName}
+              onChange={(e) => setSearchName(e.target.value)}
+            />
+          </div>
 
-      {/* Pagination */}
-      <div className="pagination">
-        <button
-          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-          disabled={currentPage === 1}
-        >
-          Previous
-        </button>
-        <span>Page {currentPage}</span>
-        <button
-          onClick={() =>
-            setCurrentPage((prev) =>
-              Math.min(prev + 1, Math.ceil(filteredData.length / itemsPerPage))
-            )
-          }
-          disabled={currentPage === Math.ceil(filteredData.length / itemsPerPage)}
-        >
-          Next
-        </button>
+          {/* Performance Table */}
+          <div className="base-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Employee Name</th>
+                  <th>Goal Description</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  <th>Score</th>
+                  <th>Feedback</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedData.map((item) => {
+                  const currentEditState = editStates[item.id] || {};
+                  return (
+                    <tr key={item.id}>
+                      <td>{item.employeeName}</td>
+                      <td>{item.description}</td>
+                      <td>
+                        {item.start_date
+                          ? new Date(
+                              item.start_date.seconds * 1000
+                            ).toLocaleDateString()
+                          : "Invalid Date"}
+                      </td>
+                      <td>
+                        {item.end_date
+                          ? new Date(
+                              item.end_date.seconds * 1000
+                            ).toLocaleDateString()
+                          : "Invalid Date"}
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          value={currentEditState.score || ""}
+                          onChange={(e) =>
+                            handleInputChange(item.id, "score", e.target.value)
+                          }
+                        />
+                      </td>
+                      <td>
+                        <textarea
+                          value={currentEditState.feedback || ""}
+                          onChange={(e) =>
+                            handleInputChange(
+                              item.id,
+                              "feedback",
+                              e.target.value
+                            )
+                          }
+                        />
+                      </td>
+                      <td>
+                        <button onClick={() => saveFeedbackAndScore(item.id)}>
+                          Submit Feedback
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+          {/* Pagination */}
+          <div className="pagination">
+            <button
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+            >
+              Previous
+            </button>
+            <span>Page {currentPage}</span>
+            <button
+              onClick={() =>
+                setCurrentPage((prev) =>
+                  Math.min(
+                    prev + 1,
+                    Math.ceil(filteredData.length / itemsPerPage)
+                  )
+                )
+              }
+              disabled={
+                currentPage === Math.ceil(filteredData.length / itemsPerPage)
+              }
+            >
+              Next
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

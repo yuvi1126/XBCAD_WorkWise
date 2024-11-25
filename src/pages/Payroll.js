@@ -120,8 +120,16 @@ const Payroll = () => {
   };
 
   return (
-    <div className="payroll-page">
-      <h1>Payroll Management</h1>
+    <div className="recruitment-page">
+      <div className="side-panel">
+        <h2>Payroll</h2>
+        <ul>
+          <li onClick={() => (window.location.href = "/dashboard")}>Back</li>
+        </ul>
+      </div>
+      <div className="main-content-recruitment">
+      <div className="base-table">
+      
 
       <table className="payroll-table">
         <thead>
@@ -198,6 +206,9 @@ const Payroll = () => {
         </div>
       )}
     </div>
+        </div>
+      </div>
+    
   );
 };
 

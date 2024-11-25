@@ -22,7 +22,6 @@
   display: flex;
   flex-direction: column;
   padding: 16px;
-  color: #ffffff;
 }
 
 .employee-header {
@@ -50,6 +49,11 @@
   padding: 8px 10px;
   border-radius: 4px;
   width: 240px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
 }
 
 .search-bar:focus {
@@ -72,59 +76,7 @@
   background-color: #6291fd;
 }
 
-/* Table View */
-.employee-table {
-  width: 90%; /* Increase table width */
-  max-width: 1200px; /* Optional: limit maximum width for better layout */
-  margin: 20px auto; /* Center the table */
-  border-collapse: collapse;
-  background-color: #1a2131; /* Dark background for the table */
-  border-radius: 8px;
-  overflow: hidden;
-  font-size: 16px; /* Increase font size for better readability */
-  border: 1px solid #333c4d; /* Border around the table */
-}
 
-.employee-table th {
-  background-color: #242b3a; /* Darker background for table headers */
-  color: #ffffff;
-  padding: 16px; /* Increase padding for larger headers */
-  text-align: left;
-  border-bottom: 2px solid #333c4d;
-  font-weight: bold;
-  border: 1px solid #333c4d; /* Border around headers */
-}
-
-.employee-table td {
-  padding: 16px; /* Increase padding for larger rows */
-  border-bottom: 1px solid #333c4d;
-  color: #ffffff; /* White text for table rows */
-  border: 1px solid #333c4d; /* Border around cells */
-}
-
-.employee-table tbody tr:hover {
-  background-color: #2b354b; /* Highlight row on hover */
-}
-
-.employee-table tbody tr:last-child td {
-  border-bottom: none; /* Remove border for the last row */
-}
-
-/* Action Button in Table View */
-.employee-table tbody tr td .action-button {
-  background-color: #2869ff;
-  color: white;
-  border: none;
-  padding: 10px 20px; /* Larger buttons */
-  border-radius: 6px;
-  font-size: 14px; /* Slightly bigger font size for buttons */
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.employee-table tbody tr td .action-button:hover {
-  background-color: #6291fd;
-}
 
 /* Responsive Design for Smaller Screens */
 @media (max-width: 768px) {

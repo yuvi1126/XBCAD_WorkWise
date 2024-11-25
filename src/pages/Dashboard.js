@@ -21,6 +21,7 @@ import {
   AddCircle,
   AdminPanelSettings,
 } from "@mui/icons-material";
+import { ChartSpline, LaptopMinimalCheck, LogOut, Receipt, Timer } from "lucide-react";
 
 ChartJS.register(
   ArcElement,
@@ -38,7 +39,7 @@ const DashboardPage = () => {
   const [users, setUsers] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
   const navigate = useNavigate();
-
+  console.log(currentUser);
   useEffect(() => {
     const user = auth.currentUser;
     if (user) {
@@ -105,15 +106,16 @@ const DashboardPage = () => {
       <header className="top-nav">
         <div className="logo-container">
           <img src={logo} alt="WorkWise Logo" className="logo" />
-          <h1>WorkWise</h1>
+          <h1 className="title-text ">WorkWise</h1>
         </div>
         <div className="user-actions">
           {currentUser && (
             <span className="user-email">{currentUser.email}</span>
           )}
-          <button className="logout-btn" onClick={handleLogout}>
+          <LogOut color="white" className="" onClick={handleLogout} />
+          {/* <button className="logout-btn" onClick={handleLogout}>
             Logout
-          </button>
+          </button> */}
         </div>
       </header>
 
@@ -124,27 +126,27 @@ const DashboardPage = () => {
         <ul>
           <li onClick={() => navigate("/employee-database-management")}>
             <Dashboard />
-            {isSidebarOpen && <span>Employee Database Management</span>}
+            {isSidebarOpen && <span>Employees</span>}
           </li>
           <li onClick={() => navigate("/recruitment-onboarding")}>
             <People />
-            {isSidebarOpen && <span>Recruitment and Onboarding</span>}
+            {isSidebarOpen && <span>Recruitment</span>}
           </li>
           <li onClick={() => navigate("/time-attendance-tracking")}>
-            <AddCircle />
-            {isSidebarOpen && <span>Time and Attendance Tracking</span>}
+            <Timer />
+            {isSidebarOpen && <span>Timekeeping</span>}
           </li>
           <li onClick={() => navigate("/payroll")}>
-            <AdminPanelSettings />
-            {isSidebarOpen && <span>Payroll and Compensation</span>}
+            <Receipt/>
+            {isSidebarOpen && <span>Payroll</span>}
           </li>
           <li onClick={() => navigate("/performance-management")}>
-            <AdminPanelSettings />
-            {isSidebarOpen && <span>Performance Management</span>}
+            <ChartSpline />
+            {isSidebarOpen && <span>Performance</span>}
           </li>
           <li onClick={() => navigate("/learning-development")}>
-            <AdminPanelSettings />
-            {isSidebarOpen && <span>Learning and Development</span>}
+            <LaptopMinimalCheck />
+            {isSidebarOpen && <span>Training</span>}
           </li>
         </ul>
       </aside>

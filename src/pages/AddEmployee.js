@@ -27,8 +27,16 @@ const AddEmployeePage = () => {
   };
 
   const validateFields = () => {
-    const { fullName, role, department, contactNumber, email, password } = employee;
-    if (!fullName || !role || !department || !contactNumber || !email || !password) {
+    const { fullName, role, department, contactNumber, email, password } =
+      employee;
+    if (
+      !fullName ||
+      !role ||
+      !department ||
+      !contactNumber ||
+      !email ||
+      !password
+    ) {
       setError("Please fill out all fields.");
       return false;
     }
@@ -42,12 +50,17 @@ const AddEmployeePage = () => {
   const handleAddEmployee = async () => {
     if (!validateFields()) return;
 
-    const { fullName, role, department, contactNumber, email, password } = employee;
+    const { fullName, role, department, contactNumber, email, password } =
+      employee;
     const actualEmployeeId = uuidv4(); // Generate unique actual_employee_id
 
     try {
       // Register employee in Firebase Authentication
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       const userId = userCredential.user.uid;
 
       // Create employee object
@@ -64,7 +77,14 @@ const AddEmployeePage = () => {
       await setDoc(doc(db, "actual_employees", actualEmployeeId), employeeData);
 
       setSuccessMessage("Employee added successfully!");
-      setEmployee({ fullName: "", role: "", department: "", contactNumber: "", email: "", password: "" });
+      setEmployee({
+        fullName: "",
+        role: "",
+        department: "",
+        contactNumber: "",
+        email: "",
+        password: "",
+      });
     } catch (error) {
       console.error("Error adding employee:", error);
       setError("Failed to add employee. Please try again.");
@@ -75,72 +95,100 @@ const AddEmployeePage = () => {
   };
 
   return (
-    <div className="add-employee-container">
-      <button className="back-to-dashboard" onClick={handleBackToDashboard}>
-        &larr; Back to Dashboard
-      </button>
-      <div className="form-section">
-        <h1 className="form-title">Add New Employee</h1>
-        {error && <p className="error-message">{error}</p>} {/* Display error message */}
-        {successMessage && <p className="success-message">{successMessage}</p>} {/* Display success message */}
-        <form className="employee-form">
-          <input
-            type="text"
-            name="fullName"
-            placeholder="Full Name"
-            value={employee.fullName}
-            onChange={handleInputChange}
-          />
-          <select
-            name="role"
-            value={employee.role}
-            onChange={handleInputChange}
-          >
-            <option value="">Select Role</option>
-            <option value="Junior">Junior</option>
-            <option value="Senior">Senior</option>
-            <option value="Executive">Executive</option>
-          </select>
-          <select
-            name="department"
-            value={employee.department}
-            onChange={handleInputChange}
-          >
-            <option value="">Select Department</option>
-            <option value="IT">IT</option>
-            <option value="HR">HR</option>
-            <option value="Finance">Finance</option>
-            <option value="Marketing">Marketing</option>
-            <option value="Sales">Sales</option>
-          </select>
-          <input
-            type="text"
-            name="contactNumber"
-            placeholder="Contact Number"
-            value={employee.contactNumber}
-            onChange={handleInputChange}
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={employee.email}
-            onChange={handleInputChange}
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={employee.password}
-            onChange={handleInputChange}
-          />
-          <button type="button" className="add-employee-button" onClick={handleAddEmployee}>
-            Add Employee
-          </button>
-        </form>
+    <div className="admin-login-page">
+      <div className="background-elements">
+        <div className="circle large"></div>
+        <div className="circle medium"></div>
+        <div className="circle small"></div>
+        <div className="diagonal-lines"></div>
       </div>
-      <div className="image-section">
-        <img src={employeeImage} alt="Employee Placeholder" className="employee-image" />
+      <div className="login-container-fullscreen">
+        <div className="add-employee-container">
+          <button className="back-to-dashboard" onClick={handleBackToDashboard}>
+            &larr; Back to Dashboard
+          </button>
+          <div className="form-section">
+            <h1 className="form-title animated-text">Add New Employee</h1>
+            {error && <p className="error-message">{error}</p>}{" "}
+            {/* Display error message */}
+            {successMessage && (
+              <p className="success-message">{successMessage}</p>
+            )}{" "}
+            {/* Display success message */}
+            <form className="employee-form">
+              <input
+                type="text"
+                className="base-input"
+                name="fullName"
+                placeholder="Full Name"
+                value={employee.fullName}
+                onChange={handleInputChange}
+              />
+              <select
+                name="role"
+                className="base-input"
+                value={employee.role}
+                onChange={handleInputChange}
+              >
+                <option value="">Select Role</option>
+                <option value="Junior">Junior</option>
+                <option value="Senior">Senior</option>
+                <option value="Executive">Executive</option>
+              </select>
+              <select
+                name="department"
+                className="base-input"
+                value={employee.department}
+                onChange={handleInputChange}
+              >
+                <option value="">Select Department</option>
+                <option value="IT">IT</option>
+                <option value="HR">HR</option>
+                <option value="Finance">Finance</option>
+                <option value="Marketing">Marketing</option>
+                <option value="Sales">Sales</option>
+              </select>
+              <input
+                type="text"
+                className="base-input"
+                name="contactNumber"
+                placeholder="Contact Number"
+                value={employee.contactNumber}
+                onChange={handleInputChange}
+              />
+              <input
+                type="email"
+                name="email"
+                className="base-input"
+                placeholder="Email"
+                value={employee.email}
+                onChange={handleInputChange}
+              />
+              <input
+                type="password"
+                name="password"
+                className="base-input"
+                placeholder="Password"
+                value={employee.password}
+                onChange={handleInputChange}
+              />
+              <button
+                type="button"
+                className="base-button"
+                onClick={handleAddEmployee}
+              >
+                Add Employee
+              </button>
+            </form>
+          </div>
+          <div className="image-section">
+            <img
+              src={employeeImage}
+              alt="Employee Placeholder"
+              className="employee-image"
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

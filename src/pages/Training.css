@@ -1,0 +1,335 @@
+:root {
+  --background-gradient: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  --primary-text: #ffffff;
+  --secondary-text: #a0a0a0;
+  --card-bg: #1e293b;
+  --card-shadow: rgba(0, 0, 0, 0.3);
+  --button-bg: #3498db;
+  --button-hover: #2980b9;
+  --input-border: rgba(255, 255, 255, 0.2);
+  --input-focus: #3498db;
+}
+/* 
+body {
+  font-family: "Poppins", sans-serif;
+  background: var(--background-gradient);
+  color: var(--primary-text);
+  margin: 0;
+  padding: 0;
+} */
+
+.training-page {
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.back-button {
+  display: inline-block;
+  align-self: flex-start;
+  margin-bottom: 20px;
+  color: var(--primary-text);
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.training-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.training-header h1 {
+  font-size: 2.5rem;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.training-header p {
+  font-size: 1.2rem;
+  color: var(--secondary-text);
+}
+
+.training-form {
+  background-color: var(--card-bg);
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px var(--card-shadow);
+  width: 100%;
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.training-form h2 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.training-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.animated-input,
+.animated-textarea {
+  padding: 12px;
+  border: 1px solid var(--input-border);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--primary-text);
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.animated-input:focus,
+.animated-textarea:focus {
+  outline: none;
+  border-color: var(--input-focus);
+  box-shadow: 0 0 5px var(--input-focus);
+}
+
+.add-course-button {
+  background-color: var(--button-bg);
+  color: var(--primary-text);
+  padding: 15px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.add-course-button:hover {
+  background-color: var(--button-hover);
+  transform: translateY(-2px);
+}
+
+.course-list {
+  background-color: var(--card-bg);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px var(--card-shadow);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.course-card {
+  background-color: var(--card-bg);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px var(--card-shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.course-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.course-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: var(--button-bg);
+}
+
+.course-card p {
+  font-size: 1rem;
+  color: var(--secondary-text);
+  margin-bottom: 15px;
+}
+
+.watch-video-link {
+  color: var(--button-bg);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.watch-video-link:hover {
+  text-decoration: underline;
+}
+
+.enrolled-button {
+  background-color: var(--button-bg);
+  color: var(--primary-text);
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.enrolled-button:hover {
+  background-color: var(--button-hover);
+  transform: translateY(-2px);
+}
+
+.no-courses {
+  font-size: 1.2rem;
+  text-align: center;
+  color: var(--secondary-text);
+}
+
+.scrollable {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.scrollable::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollable::-webkit-scrollbar-thumb {
+  background-color: var(--button-bg);
+  border-radius: 4px;
+}
+
+.scrollable::-webkit-scrollbar-track {
+  background: var(--input-border);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .training-form,
+  .course-list {
+    width: 95%;
+  }
+
+  .training-header h1 {
+    font-size: 2rem;
+  }
+
+  .training-header p {
+    font-size: 1rem;
+  }
+}
+.enrolled-employees {
+  margin-top: 20px;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.enrolled-employees table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.enrolled-employees table th,
+.enrolled-employees table td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.enrolled-employees button {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.enrolled-employees button:hover {
+  background-color: #0056b3;
+}
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  ;
+}
+
+.modal-content {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 60%;
+  max-height: 80%;
+  overflow-y: auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  color: #333
+}
+
+.modal-content h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.modal-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.modal-content th,
+.modal-content td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.close-modal-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.close-modal-button:hover {
+  background-color: #0056b3;
+}
+
+.job-creation-form-borderd {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  padding: 20px;
+  gap: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.flex-col-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

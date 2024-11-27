@@ -1,0 +1,378 @@
+/* CSS Reset and Variables */
+:root {
+  --primary-color: #343a40;
+  --secondary-color: #6c757d;
+  --success-color: #28a745;
+  --success-hover: #218838;
+  --bg-light: #f8f9fa;
+  --bg-dark: #343a40;
+  --text-light: #f8f9fa;
+  --text-dark: #343a40;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --border-radius: 8px;
+  --transition-speed: 0.3s;
+  --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* General Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  color: gray white !important;
+}
+
+/* body {
+  font-family: 'Inter', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-light);
+  color: var(--text-dark);
+  line-height: 1.6;
+} */
+
+.recruitment-page {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar with Enhanced Styling */
+.side-panel {
+  width: 280px;
+  background: linear-gradient(145deg, var(--bg-dark), #1a1e21);
+  color: var(--text-light);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--spacing-lg);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  transition: width var(--transition-speed) ease;
+}
+
+.side-panel h2 {
+  margin-bottom: var(--spacing-lg);
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  background: linear-gradient(45deg, #fff, #e0e0e0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.side-panel ul {
+  list-style-type: none;
+  padding: 0;
+  width: 100%;
+}
+
+.side-panel ul li {
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  background-color: #ffffff1a;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  text-align: center;
+  transition: all var(--transition-speed) ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.side-panel ul li:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.side-panel ul li::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.side-panel ul li:hover::before {
+  left: 100%;
+}
+
+/* Main Content Area */
+.main-content-recruitment {
+  flex: 1;
+  padding: var(--spacing-lg);
+  background-color: #f0f2f5;
+  overflow-y: auto;
+  transition: all var(--transition-speed) ease;
+  color: #1a1e21;
+}
+
+/* Enhanced Form Styles */
+.form-wrapper {
+  max-width: 600px;
+  margin: auto;
+  background-color: white;
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  transition: transform var(--transition-speed) ease;
+}
+
+.form-wrapper:hover {
+  transform: translateY(-5px);
+}
+
+.form-wrapper h2 {
+  margin-bottom: var(--spacing-lg);
+  font-size: 1.5rem;
+  text-align: center;
+  color: var(--text-dark);
+  position: relative;
+}
+
+.form-wrapper h2::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 3px;
+  background: var(--success-color);
+  border-radius: 2px;
+}
+
+.form-wrapper form input,
+.form-wrapper form textarea {
+  width: 100%;
+  margin-bottom: var(--spacing-md);
+  padding: var(--spacing-md);
+  border: 2px solid #e0e0e0;
+  border-radius: var(--border-radius);
+  transition: all var(--transition-speed) ease;
+  font-size: 1rem;
+}
+
+.form-wrapper form input:focus,
+.form-wrapper form textarea:focus {
+  outline: none;
+  border-color: var(--success-color);
+  box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.2);
+}
+
+.form-wrapper form button {
+  background-color: var(--success-color);
+  color: white;
+  border: none;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  width: 100%;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all var(--transition-speed) ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.form-wrapper form button:hover {
+  background-color: var(--success-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.2);
+}
+
+/* Enhanced Job List */
+.jobs-list ul li {
+  background-color: white;
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  transition: all var(--transition-speed) ease;
+  border-left: 4px solid var(--success-color);
+}
+
+.jobs-list ul li:hover {
+  transform: translateX(5px);
+}
+
+.jobs-list ul li h4 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+/* Enhanced Applicants Table */
+.applicants-list {
+  max-width: 100%;
+  margin: auto;
+  background-color: white;
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.applicants-list table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: var(--spacing-md);
+}
+
+
+/* Enhanced Responsive Design */
+@media (max-width: 1024px) {
+  .recruitment-page {
+    flex-direction: column;
+  }
+
+  .side-panel {
+    width: 100%;
+    height: auto;
+    position: static;
+    padding: var(--spacing-md);
+  }
+
+  .side-panel ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+  }
+
+  .side-panel ul li {
+    flex: 1;
+    min-width: 150px;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .main-content {
+    padding: var(--spacing-md);
+  }
+}
+
+@media (max-width: 768px) {
+  .form-wrapper,
+  .applicants-list {
+    padding: var(--spacing-md);
+  }
+
+  .applicants-list {
+    overflow-x: auto;
+  }
+
+  .applicants-list table {
+    font-size: 0.875rem;
+  }
+
+  .side-panel ul li {
+    min-width: 120px;
+  }
+}
+
+/* Loading States and Animations */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.loading {
+  animation: shimmer 2s infinite linear;
+  background: linear-gradient(
+    to right,
+    #f6f7f8 0%,
+    #edeef1 20%,
+    #f6f7f8 40%,
+    #f6f7f8 100%
+  );
+  background-size: 1000px 100%;
+}
+
+.job-creation-form {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+
+
+.job-creation-form h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #555;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.form-group textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+button[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  background-color:#42474b;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #6b6969;
+}
+
+@media (max-width: 768px) {
+  .job-creation-form {
+    padding: 15px;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    font-size: 14px;
+  }
+
+  button[type="submit"] {
+    padding: 10px;
+    font-size: 14px;
+  }
+}
